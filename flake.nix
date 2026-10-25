@@ -43,13 +43,13 @@
                                                                                 while [[ "$#" -gt 0 ]]
                                                                                 do
                                                                                     case "$1" in
-                                                                                        --inherit)
+                                                                                        --replace)
                                                                                             if [[ "$#" -lt 2 ]]
                                                                                             then
                                                                                                 failure 9002657793311682
                                                                                             fi
-                                                                                            SED_EXPRESSIONS+=( -e "s#\\\$$2#$2#g" )
-                                                                                            shift 2
+                                                                                            SED_EXPRESSIONS+=( -e "s#\\\$$2#$3#g" )
+                                                                                            shift 3
                                                                                             ;;
                                                                                         *)
                                                                                             failure 0980715480386338 "$@"
@@ -73,14 +73,10 @@
                                             obviated-by
                                         } :
                                         {
-                                            exports ,
-                                            input-file ,
-                                            output-file ,
-                                            permissions
-                                        } :
-                                        {
-                                            output-file-cat ,
-                                            output-file-permissions
+                                            initialization ,
+                                            invocation ,
+                                            expected-content ,
+                                            expected-permissions
                                         } :
                                             {
                                                 obviated-by = obviated-by ;
@@ -100,13 +96,14 @@
                                                                                             _pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "test-script" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.diffutils ] ;
+                                                                                                    runtimeInputs = [ ( _config.failure { } ) _config.wrap pkgs.coreutils pkgs.diffutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            wrap ${ input-file } ${ output-file } ${ builtins.toString permissions } ${ builtins.concatStringsSep " " exports }
-                                                                                                            diff --unified ${ builtins.toFile "expected" output-file-cat } ${ output-file }
+                                                                                                            OUTPUT_FILE="$( mktemp --dry-run )" || failure 9806337050783776
+                                                                                                            ${ invocation ( builtins.toFile "input" initialization ) "$OUTPUT_FILE" }
+                                                                                                            diff --unified ${ builtins.toFile "expected" expected-content } ${ output-file }
                                                                                                             OBSERVED_PERMISSIONS="$( stat --printf %a ${ output-file } )" || failure 1669229998858597
-                                                                                                            if [[ ${ builtins.toString output-file-permissions } != "$OBSERVED_PERMISSIONS" ]]
+                                                                                                            if [[ ${ builtins.toString expected-permissions } != "$OBSERVED_PERMISSIONS" ]]
                                                                                                             then
                                                                                                                 failure 4837225148265565
                                                                                                             fi
