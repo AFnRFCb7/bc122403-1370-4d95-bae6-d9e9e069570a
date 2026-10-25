@@ -118,7 +118,7 @@
                                                                 '' ;
                                                         } ;
                                                 type = "wrap" ;
-                                            }
+                                            } ;
                                     implementation = implementation-identity implementation ;
                                 } ;
             } ;
