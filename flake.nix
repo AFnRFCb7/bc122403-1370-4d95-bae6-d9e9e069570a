@@ -104,7 +104,7 @@
                                                                                                         ''
                                                                                                             OUTPUT_FILE="$( mktemp --dry-run )" || failure 9806337050783776
                                                                                                             ${ invocation ( builtins.toFile "input" initialization ) "$OUTPUT_FILE" }
-                                                                                                            diff --unified ${ builtins.toFile "expected" expected-content } ${ output-file }
+                                                                                                            diff --unified ${ builtins.toFile "expected" expected-content } "$OUTPUT_FILE"
                                                                                                             OBSERVED_PERMISSIONS="$( stat --printf %a ${ output-file } )" || failure 1669229998858597
                                                                                                             if [[ ${ builtins.toString expected-permissions } != "$OBSERVED_PERMISSIONS" ]]
                                                                                                             then
