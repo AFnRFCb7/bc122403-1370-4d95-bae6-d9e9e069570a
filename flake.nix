@@ -71,6 +71,7 @@
                                 {
                                     check =
                                         {
+                                            failure ,
                                             nixosTest ,
                                             obviated-by
                                         } :
@@ -114,7 +115,7 @@
                                                                                                 }
                                                                                         )
                                                                                     ] ;
-                                                                                imports = [ implementation ] ;
+                                                                                imports = [ failure implementation ] ;
                                                                             } ;
                                                             testScript =
                                                                 ''
