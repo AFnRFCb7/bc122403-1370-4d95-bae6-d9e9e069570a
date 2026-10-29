@@ -20,7 +20,7 @@
                                             with identified ;
                                                 {
                                                     options.wrap =
-                                                        _lib.mkOption
+                                                        lib.mkOption
                                                             {
                                                                 default =
                                                                     _pkgs.writeShellApplication
