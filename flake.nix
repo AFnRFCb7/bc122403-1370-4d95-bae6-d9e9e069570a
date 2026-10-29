@@ -73,7 +73,32 @@
                                 {
                                     check =
                                         {
-                                            failure ,
+                                            failure ?
+                                                { pkgs , ... } @module :
+                                                    let
+                                                        identified =
+                                                            if builtins.typeOf input == "lambda" then input module
+                                                            else if builtins.typeOf input == "null" then module
+                                                            else builtins.throw "7686973415922357" ;
+                                                        in
+                                                            with identified ;
+                                                                {
+                                                                    environment.systemPackages =
+                                                                        [
+                                                                            (
+                                                                                pkgs.writeShellApplication
+                                                                                    {
+                                                                                        name = "failure" ;
+                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                        text =
+                                                                                            ''
+                                                                                                echo "$@" >&2
+                                                                                                exit 177
+                                                                                            '' ;
+                                                                                    }
+                                                                            )
+                                                                        ] ;
+                                                                } ,
                                             nixosTest ,
                                             obviated-by
                                         } :
