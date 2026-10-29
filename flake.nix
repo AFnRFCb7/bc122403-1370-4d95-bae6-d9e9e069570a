@@ -122,6 +122,8 @@
                                                                                 } ;
                                                             testScript =
                                                                 ''
+                                                                    client.wait_for_unit("multi-user.target")
+                                                                    client.succeed("test-script")
                                                                 '' ;
                                                         } ;
                                                 type = "wrap" ;
