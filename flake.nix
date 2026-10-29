@@ -46,11 +46,13 @@
                                                                                     do
                                                                                         case "$1" in
                                                                                             --replace)
+                                                                                                SEARCH="$2"
+                                                                                                REPLACE="$3"
                                                                                                 if [[ "$#" -lt 2 ]]
                                                                                                 then
                                                                                                     failure 9002657793311682
                                                                                                 fi
-                                                                                                SED_EXPRESSIONS+=( -e "s#\\\$$2#$3#g" )
+                                                                                                SED_EXPRESSIONS+=( -e "s#$SEARCH#$REPLACE#g" )
                                                                                                 shift 3
                                                                                                 ;;
                                                                                             *)
