@@ -79,25 +79,27 @@
                                                         identified =
                                                             if builtins.typeOf input == "lambda" then input module
                                                             else if builtins.typeOf input == "null" then module
-                                                            else builtins.throw "7686973415922357" ;
+                                                            else builtins.throw "3089158225937633" ;
                                                         in
                                                             with identified ;
                                                                 {
-                                                                    environment.systemPackages =
-                                                                        [
-                                                                            (
-                                                                                pkgs.writeShellApplication
-                                                                                    {
-                                                                                        name = "failure" ;
-                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                        text =
-                                                                                            ''
-                                                                                                echo "$@" >&2
-                                                                                                exit 177
-                                                                                            '' ;
-                                                                                    }
-                                                                            )
-                                                                        ] ;
+                                                                    options.failure =
+                                                                        lib.mkOption
+                                                                            {
+                                                                                default =
+                                                                                    ignore :
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "failure" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        cat "$@" >&2
+                                                                                                        exit 140
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                type = lib.types.functionTo lib.types.package ;
+                                                                            } ;
                                                                 } ,
                                             nixosTest ,
                                             obviated-by
