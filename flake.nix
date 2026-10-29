@@ -23,10 +23,10 @@
                                                         lib.mkOption
                                                             {
                                                                 default =
-                                                                    _pkgs.writeShellApplication
+                                                                    pkgs.writeShellApplication
                                                                         {
                                                                             name = "wrap" ;
-                                                                            runtimeInputs = [ ( _config.failure { } ) _pkgs.coreutils ] ;
+                                                                            runtimeInputs = [ ( config.failure { } ) pkgs.coreutils ] ;
                                                                             text =
                                                                                 ''
                                                                                     INPUT_FILE="$1"
@@ -64,7 +64,7 @@
                                                                                     chmod "$PERMISSIONS" "$OUTPUT_FILE"
                                                                                 '' ;
                                                                         } ;
-                                                                type = _lib.types.package ;
+                                                                type = lib.types.package ;
                                                             } ;
                                                 } ;
                             in
@@ -100,10 +100,10 @@
                                                                                     config.environment.systemPackages =
                                                                                         [
                                                                                             (
-                                                                                                _pkgs.writeShellApplication
+                                                                                                pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "test-script" ;
-                                                                                                        runtimeInputs = [ ( _config.failure { } ) _config.wrap pkgs.coreutils pkgs.diffutils ] ;
+                                                                                                        runtimeInputs = [ ( config.failure { } ) config.wrap pkgs.coreutils pkgs.diffutils ] ;
                                                                                                         text =
                                                                                                             ''
                                                                                                                 OUTPUT_FILE="$( mktemp --dry-run )" || failure 9806337050783776
