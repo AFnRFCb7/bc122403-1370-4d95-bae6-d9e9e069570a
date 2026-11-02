@@ -38,7 +38,7 @@
                                                                                     PERMISSIONS="$3"
                                                                                     if [[ ! "$PERMISSIONS" =~ ^0?[0-7]{3,4}$ ]]
                                                                                     then
-                                                                                        failure 1166717505596797
+                                                                                        failure 1166717505596797 "$PERMISSIONS"
                                                                                     fi
                                                                                     shift 3
                                                                                     SED_EXPRESSIONS=()
